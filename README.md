@@ -2,6 +2,11 @@
 
 The maximum distance(meters) covered by each vessel.
 
+### Packages to install:
+
+install.packages(c("dplyr", "shiny", "shinyWidgets", "leaflet"))
+
+
 ![Image of VALO](https://i.ibb.co/JFRP0L0/Screen-Shot-2020-10-05-at-11-19-39-pm.png)
 
 
