@@ -31,10 +31,12 @@ findJourney <- function(vessel_type, vessel_name){
   ############################################
   ships <- ships %>%
     filter(ship_type == vessel_type & SHIPNAME == vessel_name)
+  
   num_rows <- nrow(ships)
   max_distance_covered = 0
-  output = list()
   time_taken_buffer = 0
+  output = list()
+  
   for(row in 1:(num_rows-1)){
     start_time <- strptime(ships[row, 'DATETIME'], format = "%Y-%m-%d %H:%M:%S", tz="Poland")
     end_time <- strptime(ships[row+1, 'DATETIME'], format = "%Y-%m-%d %H:%M:%S", tz="Poland")
@@ -43,15 +45,6 @@ findJourney <- function(vessel_type, vessel_name){
     distance <- (speed * time_taken) # calculate distance in meters
     
     if(distance >= max_distance_covered){
-      # special case: some vessels have not moved
-      if(row == (num_rows-1) & length(output) == 0){
-        source <- ships[row, c('LON','LAT')]
-        destination <- ships[row+1, c('LON','LAT')]
-        journey <- rbind(source, destination)
-        colnames(journey) = c('long', 'lat')
-        output$journey <- journey
-        output$max_distance_covered <- distance
-      }
       # case: if distances are equal and time taken is more skip loop
       if(distance == max_distance_covered & (time_taken > time_taken_buffer)){
         next
